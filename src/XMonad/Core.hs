@@ -25,7 +25,7 @@
 module XMonad.Core (
     X, WindowSet, WindowSpace, WorkspaceId,
     ScreenId(..), ScreenDetail(..), XState(..),
-    XConf(..), XConfig(..), LayoutClass(..),
+    XConf(..), XConfig(..), LayoutClass(..), QubesWindowData(..),
     Layout(..), readsLayout, Typeable, Message,
     SomeMessage(..), fromMessage, LayoutMessages(..),
     StateExtension(..), ExtensionClass(..), ConfExtension(..),
@@ -134,8 +134,14 @@ data XConfig l = XConfig
                                                  --
                                                  -- The module "XMonad.Util.ExtensibleConf" in xmonad-contrib
                                                  -- provides additional information and a simple interface for using this.
+    , qubesColors        :: QubesWindowData -> (String, String) -- ^ Return the preferred active and inactive border color
     }
 
+-- | Qubes-related window data.
+data QubesWindowData =
+    QubesWindowData { qubesVMName :: String -- ^ Name of the VM that created the window
+                    , qubesLabel :: Integer -- ^ Corresponding VM label
+                    }
 
 type WindowSet   = StackSet  WorkspaceId (Layout Window) Window ScreenId ScreenDetail
 type WindowSpace = Workspace WorkspaceId (Layout Window) Window
